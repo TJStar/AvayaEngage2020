@@ -48,10 +48,10 @@ ansible_port=22
 ansible_connection=ssh
 ansible_ssh_common_args='-o StrictHostKeyChecking=no UserKnownHostsFile=/dev/null'
 ```
-Where 1.1.1.7 is replaced with your specific Windows host IP.
+Where 1.1.1.7 is replaced with your specific CM host IP.
 
 Verify the Linux server responds to Ansible commands.
-`ansible windows -i ansible_host -m ping -u cust -k`
+`ansible abccm -i ansible_host -m ping -u cust -k`
 
 **Note:** The command above uses the flags -u to set the user, cust in this case, and -k to prompt for the password.
 
