@@ -21,7 +21,7 @@ Place this playbook on the server where Ansible is installed.
 ### Playbook Requirements:
 - [x] Ansible 2.x
 - [x] VMware 6.x
-- [x] Logins to VMware 
+- [x] Logins to VMware with write permissions
 
 #### Minimum command syntax required to run this playbook:
 
