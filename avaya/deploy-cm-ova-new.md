@@ -12,7 +12,7 @@
 |tested_ansible_release|2.7.2|
 
 ####  Description:
-This playbook was designed to check the install status of the SNMP windows module, check the SNMP community name,and check the configured Windows SNMP managers. The intent was to use this playbook to check the snmp_install.yml playbook.
+This playbook was designed to deploy an Avaya simplex CM server on VMware.
 
 # Instructions:
 ## How to use the playbook:
@@ -25,7 +25,7 @@ Place this playbook on the server where Ansible is installed.
 
 #### Minimum command syntax required to run this playbook:
 
- `ansible-playbook -e targets=inventory_hostname `
+ See the testing information below
 
 ### Variables for the playbook:
 |Variable name|Description of the Variable|
@@ -40,28 +40,20 @@ Create a file on your Ansible server named ansible_host.
 
 Inside ansible_host file add the following lines:
 ```
-[abccm]
-1.1.1.7
+[vcenter]
+1.1.1.50
 
-[abccm:vars]
-ansible_port=22
-ansible_connection=ssh
-ansible_ssh_common_args='-o StrictHostKeyChecking=no UserKnownHostsFile=/dev/null'
 ```
-Where 1.1.1.7 is replaced with your specific Windows host IP.
-
-Verify the Linux server responds to Ansible commands.
-`ansible windows -i ansible_host -m ping -u cust -k`
-
-**Note:** The command above uses the flags -u to set the user, cust in this case, and -k to prompt for the password.
+Where 1.1.1.50 is replaced with your specific vcenter host IP.
 
 For testing purposes it is highly advisable to setup a separate user login with the proper permissions to run commands in VMware
 
 Run the following to execute
 
-`ansible-playbook -e targets=abccm -i ansible_host -u cust  -k release.yml`
+`ansible-playbook release.yml -i ansible_host -e "vmware_user=tjohnson@vsphere.local" -e "target=vcenter"  -e "target_esxi=1.1.1.51" `
 
-**Note:** The an error maybe experienced when the task check SNMP community string is ran because the SNMP community string public may not be defined.
+**Note:** The command above uses the flags -e to set the vcenter user (vmware_user) which is tjohnson@vsphere.local. The  target_esxi for the ESXi IP address, and target field is the vcenter IP or name defined in the inventory file.
+
 
 ### Output expected:
 A deployed CM Simplex OVA :)
