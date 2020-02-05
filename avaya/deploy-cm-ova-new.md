@@ -25,12 +25,15 @@ Place this playbook on the server where Ansible is installed.
 
 #### Minimum command syntax required to run this playbook:
 
- See the testing information below
+ See the testing information below for more info
+ `ansible-playbook deploy-cm-ova-new.yml -i playbook_name -e "vmware_user=vmware_username" -e "target=vcenter_host"  -e "target_esxi=esxi_host"
 
 ### Variables for the playbook:
 |Variable name|Description of the Variable|
 |---|---|
-|targets|Which are the hosts in the inventory to run the command against, i.e the CM server(s)|
+|targets|Which are the hosts in the inventory to run the command against, i.e the vcenter server(s)|
+|target_esxi||
+The command above uses the flags -e to set the vcenter user (vmware_user) which is tjohnson@vsphere.local. The  target_esxi for the ESXi IP address, and target field is the vcenter IP or name defined in the inventory file
 
 
 ### Testing the playbook:
@@ -50,9 +53,9 @@ For testing purposes it is highly advisable to setup a separate user login with 
 
 Run the following to execute
 
-`ansible-playbook release.yml -i ansible_host -e "vmware_user=tjohnson@vsphere.local" -e "target=vcenter"  -e "target_esxi=1.1.1.51" `
+`ansible-playbook rdeploy-cm-ova-new.yml -i ansible_host -e "vmware_user=tjohnson@vsphere.local" -e "target=vcenter"  -e "target_esxi=1.1.1.51" `
 
-**Note:** The command above uses the flags -e to set the vcenter user (vmware_user) which is tjohnson@vsphere.local. The  target_esxi for the ESXi IP address, and target field is the vcenter IP or name defined in the inventory file.
+**Note:** The command above uses the flags -e to set the vcenter user (vmware_user) which is tjohnson@vsphere.local. The  target_esxi for the ESXi IP address, and target field is the vcenter IP or name defined in the inventory file. Password will be
 
 
 ### Output expected:
