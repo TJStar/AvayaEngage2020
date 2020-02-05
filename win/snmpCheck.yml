@@ -1,0 +1,77 @@
+# metadata:
+#  version: 1.1 - Cleans up the log file created
+#  peer_review:
+#  author: Tish Johnson
+#  creation_date: 05/11/19
+#  description: This playbook was designed to check the install status of the SNMP windows module, check the SNMP community name,and check the configured windows SNMP managers
+
+- hosts: "{{ targets }}"
+  gather_facts: True
+
+  vars:
+    community_name: public
+    startTime: "{{ ansible_date_time.date }}"
+    outputFile: "/tmp/{{ targets }}-snmpCheck-{{ ansible_date_time.date }}.log"
+
+  tasks:
+  - name: Check if Install SNMP
+    win_command:  "powershell.exe Get-WindowsFeature *SNMP*"
+    register: installSNMP
+
+  - name: Check SNMP manager
+    win_reg_stat:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers
+    register: snmpMgr
+
+
+  - name: Check Community String
+    win_reg_stat:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\ValidCommunities
+    register: snmpComm
+
+
+  - name: Check Trap Community String
+    win_reg_stat:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\{{community_name}}
+    register: snmpTrap
+
+  - name: Delete existing output file
+    file:
+      state=absent
+      path="{{outputFile}}"
+    delegate_to: localhost
+
+  - name: Save header block output of patching
+    no_log: true
+    blockinfile:
+      marker: ""
+      insertbefore: EOF
+      block:  "{{ item }}"
+      dest: "{{outputFile}}"
+      create: yes
+    with_items:
+      - "############ \t\t SNMP Check \t\t ############"
+      - "\n Start Time: {{ ansible_date_time.iso8601}} {{ ansible_date_time.tz }}"
+    delegate_to: localhost
+    run_once: yes
+
+  - name: Create log in /tmp/*-snmp-*.log
+    blockinfile:
+      dest: "{{outputFile}}"
+      marker_begin: "\n#### BEGIN"
+      marker_end: "#### END"
+      marker: "{mark} SNMP Settings for {{ inventory_hostname }} ####"
+      block: |
+        task_name Check if SNMP Installed
+        "{{ installSNMP.stdout_lines | to_nice_yaml}}"
+        task_name Check SNMP Manager
+        "{{ snmpMgr  | json_query('properties') | to_nice_yaml }}"
+        task_name Check SNMP community name
+        "{{ snmpComm | json_query('properties') | to_nice_yaml}}"
+        task_name Check SNMP Trap
+        "{{ snmpTrap  | json_query('properties') | to_nice_yaml }}"
+      create: no
+      insertafter: EOF
+    with_items:
+      - "{{ play_hosts }}"
+    delegate_to: localhost

@@ -1,0 +1,100 @@
+# metadata:
+#  version: 0.5 Using some hardcoded values and cleaned up the var names
+#  peer_review:
+#  author: Tish Johnson
+#  creation_date: 05/11/19
+#  description: This playbook was designed to install the SNMP windows module, set the SNMP community name,and SNMP managers
+
+- hosts: "{{ targets }}"
+  gather_facts: True
+
+  vars:
+    community_name: "YourCommunityName"
+    startTime: "{{ ansible_date_time.date }}"
+    outputFile: "/tmp/{{ targets }}-snmpInstall-{{ ansible_date_time.date }}.log"
+    nmsIP1: "1.1.1.1"
+    nmsIP2: "1.1.1.2"
+
+  tasks:
+  - name: Install SNMP
+    win_command:  "powershell.exe Install-WindowsFeature SNMP-Service -IncludeManagementTools -IncludeAllSubFeature -Verbose"
+    register: installSNMP
+
+  - name: Set SNMP manager
+    win_regedit:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers
+      name: "{{item.regname}}"
+      data: "{{item.data}}"
+      type: string
+    with_items:
+      - regname: 1
+        data: "{{ nmsIP1 }}"
+      - regname: 2
+        data: "{{ nmsIP2 }}"
+    register: snmpMgr
+
+
+  - name: Set Valid Community String
+    win_regedit:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\ValidCommunities
+      name: "{{community_name}}"
+      data: 4
+      type: dword
+    register: snmpComm
+
+
+  - name: Set Trap Community String
+    win_regedit:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\{{item.commname}}
+      name: "{{item.regname}}"
+      data: "{{item.data}}"
+      type: string
+    with_items:
+      - regname: 1
+        data: "{{ nmsIP1 }}"
+        commname: "{{community_name}}"
+      - regname: 2
+        data: "{{ nmsIP2 }}"
+        commname: "{{community_name}}"
+    register: snmpTrap
+
+  - name: Delete existing output file
+    file:
+      state=absent
+      path="{{outputFile}}"
+    delegate_to: localhost
+
+  - name: Save header block output of patching
+    no_log: true
+    blockinfile:
+      marker: ""
+      insertbefore: EOF
+      block:  "{{ item }}"
+      dest: "{{outputFile}}"
+      create: yes
+    with_items:
+      - "############ \t\t Configure SNMP \t\t ############"
+      - "\n Start Time: {{ ansible_date_time.iso8601}} {{ ansible_date_time.tz }}"
+    delegate_to: localhost
+    run_once: yes
+
+  - name: Create log in /tmp/*-snmpSet-*.log
+    blockinfile:
+      dest: "{{outputFile}}"
+      marker_begin: "\n#### BEGIN"
+      marker_end: "#### END"
+      marker: "{mark} SNMP Configuration for {{ inventory_hostname }} ####"
+      block: |
+        task_name Check if SNMP Installed
+        "{{ installSNMP.stdout_lines | to_nice_yaml}}"
+        task_name Check SNMP Manager
+        "{{ snmpMgr  | json_query('properties') | to_nice_yaml }}"
+        task_name Check SNMP community name
+        "{{ snmpComm | json_query('properties') | to_nice_yaml}}"
+        task_name Check SNMP Trap
+        "{{ snmpTrap  | json_query('properties') | to_nice_yaml }}"
+      create: no
+      insertafter: EOF
+    with_items:
+      - "{{ play_hosts }}"
+    delegate_to: localhost
