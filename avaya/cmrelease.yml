@@ -1,0 +1,22 @@
+---
+- hosts: {{ targets }}
+  gather_facts: False
+
+  vars:
+    startTime: "{{ ansible_date_time.date }}"
+    outputFile: "/tmp/{{ targets }}-cmrelease-{{ ansible_date_time.date }}.log"
+
+  tasks:
+    - name: Check Server status
+      shell: "source .bashrc && {{ item }}"
+      args:
+        executable: /bin/bash
+      with_items:
+        - /opt/ecs/bin/swversion
+      register: releaseInfo
+
+    - name: Save ouput of Release
+      copy:
+        content: "{{relaseInfo.stdout}}"
+        dest: "{{ outputFile }}"
+      delegate_to: localhost

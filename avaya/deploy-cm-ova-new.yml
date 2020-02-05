@@ -1,0 +1,96 @@
+---
+- name: 'Deploy the CM OVA to an ESXi server'
+
+  connection: 'local'
+
+  gather_facts: False
+
+  hosts: '{{ target }}'
+
+  serial: 1
+
+
+
+  vars:
+
+    hostName: 'your-cm-server-name'
+
+    domain: 'avaya.cxm'
+
+
+
+  vars_prompt:
+
+    - name: "vmware_pass"
+
+      prompt: "Input your VMware Password"
+
+
+
+  tasks:
+
+    - name: 'Deploy CM OVA'
+
+      vmware_deploy_ovf:
+
+        hostname: '{{ target_esxi }}'
+
+        username: '{{ vmware_user }}'
+
+        password: '{{ vmware_pass }}'
+
+        validate_certs: 'no'
+
+        datacenter: vmwareDCName
+
+        cluster: vmwareClusterName
+
+        datastore: vmwareDataStore
+
+        disk_provisioning: "thick"
+
+        networks:
+
+          "Public": "ABC-voice"
+
+          "Out of Band Management": "ABC-mgmt"
+
+        ovf: "CM-Simplex-07.1.0.0.532-e65-0.ova"
+
+        name: '{{ hostName }}'
+
+        power_on: "no"
+
+        deployment_option: "SmallMain"
+
+        fail_on_spec_warnings: "yes"
+
+        wait_for_ip_address: "no"
+
+        properties:
+
+          ip0: "1.1.1.52"
+
+          netmask0: "255.255.255.0"
+
+          ip1: "1.1.1.62"
+
+          netmask1: "255.255.255.0"
+
+          gateway: "1.1.1.1"
+
+          hostname: "{{ hostName }}.{{ domain }}"
+
+          weblmip: "1.1.1.5"
+
+          dns: ""
+
+          EASG_enable: "1"
+
+          cm_login: "abccm"
+
+          cm_password: "toor"
+
+          ntpservers: "1.1.1.6"
+
+      delegate_to: localhost
