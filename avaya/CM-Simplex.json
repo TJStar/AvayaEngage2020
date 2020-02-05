@@ -1,0 +1,95 @@
+{
+    "Annotation": "07.1.0.0.532-e65-0",
+    "Deployment": "SmallMain",
+    "DiskProvisioning": "thick",
+    "IPAllocationPolicy": "dhcpPolicy",
+    "IPProtocol": "IPv4",
+    "InjectOvfEnv": false,
+    "Name": null,
+    "NetworkMapping": [
+        {
+            "Name": "Public",
+            "Network": "ABC-voice"
+        },
+        {
+            "Name": "Out of Band Management",
+            "Network": "ABC-mgmt"
+        }
+    ],
+    "PowerOn": false,
+    "PropertyMapping": [
+        {
+            "Key": "ip0",
+            "Value": "1.1.1.52"
+        },
+        {
+            "Key": "netmask0",
+            "Value": "255.255.255.0"
+        },
+        {
+            "Key": "gateway",
+            "Value": "1.1.1.1"
+        },
+        {
+            "Key": "ipv6address0",
+            "Value": ""
+        },
+        {
+            "Key": "ipv6prefix0",
+            "Value": ""
+        },
+        {
+            "Key": "ipv6gateway",
+            "Value": ""
+        },
+        {
+            "Key": "ip1",
+            "Value": "1.1.1.62"
+        },
+        {
+            "Key": "netmask1",
+            "Value": "255.255.255.0"
+        },
+        {
+            "Key": "ipv6address1",
+            "Value": ""
+        },
+        {
+            "Key": "ipv6prefix1",
+            "Value": ""
+        },
+        {
+            "Key": "hostname",
+            "Value": "abc-cma.avaya.cxm"
+        },
+        {
+            "Key": "ntpservers",
+            "Value": "1.1.1.6"
+        },
+        {
+            "Key": "dns",
+            "Value": ""
+        },
+        {
+            "Key": "searchlist",
+            "Value": ""
+        },
+        {
+            "Key": "weblmip",
+            "Value": "1.1.1.5"
+        },
+        {
+            "Key": "EASG_enable",
+            "Value": "1"
+        },
+        {
+            "Key": "cm_login",
+            "Value": "abccm"
+        },
+        {
+            "Key": "cm_password",
+            "Value": "toor"
+        }
+    ],
+    "WaitForIP": true
+}
