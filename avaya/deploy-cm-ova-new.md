@@ -21,7 +21,7 @@ Place this playbook on the server where Ansible is installed.
 ### Playbook Requirements:
 - [x] Ansible 2.x
 - [x] VMware 6.x
-- [x] Logins to VMware 
+- [x] Logins to VMware with write permissions
 
 #### Minimum command syntax required to run this playbook:
 
@@ -55,74 +55,15 @@ Verify the Linux server responds to Ansible commands.
 
 **Note:** The command above uses the flags -u to set the user, cust in this case, and -k to prompt for the password.
 
-For testing purposes cust can be used however it is highly advisable to setup a non superuser login with the proper permissions to run Ansible commands from.
+For testing purposes it is highly advisable to setup a separate user login with the proper permissions to run commands in VMware
 
-Expected output should be similar to
-```
-1.1.1.7 | SUCCESS => {
-    "changed": false,
-    "ping": "pong"
-}
-```
-Once basic Linux connectivity is established run the following.
+Run the following to execute
 
 `ansible-playbook -e targets=abccm -i ansible_host -u cust  -k release.yml`
 
 **Note:** The an error maybe experienced when the task check SNMP community string is ran because the SNMP community string public may not be defined.
 
 ### Output expected:
-A file is created is named stored in the /tmp folder. The filename is dynamic is created in the form of <targets>-<playbook name>-<date>.log
-
-As an example if, the target is windows and the date is 06/13/2019. The full location of the file would be /tmp/abccm-cmrelease-2019-06-13.log
-
-If more than one target is specified, like the inventory hostname windows has 5 child servers all 5 servers will be in the same output file and each server's data will be in between the BEGIN SNMP Settings and END SNMP Settings blocks of data.
-
-Example Output:
-```
-############             SNMP Check              ############
-
-
- Start Time: 2019-06-13T04:42:39Z Central Standard Time
-
-
- #### BEGIN SNMP Settings for 1.1.1.78 ####
-task_name Check if SNMP Installed
-...
-"
-"- ''
-- 'Display Name                                            Name                   '
-- '------------                                            ----                   '
-- '        [X] SNMP Tools                                  RSAT-SNMP              '
-- '[X] SNMP Service                                        SNMP-Service           '
-- '    [X] SNMP WMI Provider                               SNMP-WMI-Provider      '
-- ''
-- ''
-"
-task_name Check SNMP Manager
-"'1':
-    raw_value: 1.1.1.3
-    type: REG_SZ
-    value: 1.1.1.3
-'2':
-    raw_value: 1.1.5.3
-    type: REG_SZ
-    value: 1.1.5.3
-    task_name Check SNMP community name
-    "public:
-        raw_value: 4
-        type: REG_DWORD
-        value: 4
-    "
-    task_name Check SNMP Trap
-    "'1':
-        raw_value: 1.1.1.3
-        type: REG_SZ
-        value: 1.1.1.3
-    '2':
-        raw_value: 1.1.5.3
-        type: REG_SZ
-        value: 1.1.5.3
-    "
-    #### END SNMP Settings for 1.1.1.78 ####
+A deployed CM Simplex OVA :)
 
 ```
