@@ -7,12 +7,12 @@
 |Fields|Info|
 |---|---|
 |peer_review|TBD|
-|author|[Tish Johnson](mailto:ljjohnson@convergeone.com?subject=release-ansible-playbook)
+|author|[Tish Johnson](mailto:ljjohnson@convergeone.com?subject=cmrelease-ansible-playbook)
 |creation_date|01/11/20|
 |tested_ansible_release|2.7.2|
 
 ####  Description:
-This playbook was designed to check the install status of the SNMP windows module, check the SNMP community name,and check the configured Windows SNMP managers. The intent was to use this playbook to check the snmp_install.yml playbook.
+This playbook was designed to grab the CM release from the CM server
 
 # Instructions:
 ## How to use the playbook:
