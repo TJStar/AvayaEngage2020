@@ -15,4 +15,4 @@ This is an inital repo to store created ansible playbooks created to complete sp
 |snmpCheck|This playbook was designed to check if Windows SNMP is configured|[snmpCheck](win/snmpCheck.md)|
 |snmpInstall|This playbook was designed to install and configure Windows SNMP |[snmpInstall](win/snmpInstall.md)|[snmpInstall](win/snmpInstall.yml)|
 |CM release|Pulls the Avaya release data from the CM |[CM Release](avaya/cmrelease.md)|[CM Release](avaya/cmrelease.yml)|
-|deploy-cm-ova|Deploys a simplex CM server |[deploy-cm-ova](avaya/deploy-cm-ova.md)|[deploy-cm-ova](avaya/deploy-cm-ova.yml)|
+|deploy-cm-ova|Deploys a simplex CM server |[deploy-cm-ova](avaya/deploy-cm-ova-new.md)|[deploy-cm-ova](avaya/deploy-cm-ova-new.yml)|
