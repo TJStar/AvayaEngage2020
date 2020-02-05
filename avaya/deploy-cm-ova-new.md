@@ -77,5 +77,3 @@ To be successful with deploying a CM the properities in the playbook do need to 
 
 ### Output expected:
 A deployed CM Simplex OVA :)
-
-```
