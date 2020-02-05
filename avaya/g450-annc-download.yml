@@ -22,7 +22,7 @@
 
          annc_file: []
 
-         annc_dir: /home/c1admin/annc/{{ lookup('pipe', 'date +%Y_%m%d_%H%M') }}
+         annc_dir: /tmp/{{ lookup('pipe', 'date +%Y_%m%d_%H%M') }}
 
   tasks:
 
