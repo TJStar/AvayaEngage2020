@@ -16,4 +16,4 @@ This is an inital repo to store created ansible playbooks created to complete sp
 |snmpInstall|This playbook was designed to install and configure Windows SNMP |[snmpInstall](win/snmpInstall.md)|[snmpInstall](win/snmpInstall.yml)|
 |CM release|Pulls the Avaya release data from the CM |[CM Release](avaya/cmrelease.md)|[CM Release](avaya/cmrelease.yml)|
 |deploy-cm-ova-new|Deploys a simplex CM server |[deploy-cm-ova-new](avaya/deploy-cm-ova-new.md)|[deploy-cm-ova-new](avaya/deploy-cm-ova-new.yml)|
-|g450-annc-downlaod|Downloads all announcement files from G450 |[g450-annc-downlaod](avaya/g450-annc-downlaod.md)|[g450-annc-downlaod](avaya/g450-annc-downlaod.yml)|
+|g450-annc-downlaod|Downloads all announcement files from G450 |[g450-annc-downlaod](avaya/g450-annc-download.md)|[g450-annc-downlaod](avaya/g450-annc-download.yml)|
