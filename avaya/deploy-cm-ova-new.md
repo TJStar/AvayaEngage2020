@@ -32,8 +32,8 @@ Place this playbook on the server where Ansible is installed.
 |Variable name|Description of the Variable|
 |---|---|
 |targets|Which are the hosts in the inventory to run the command against, i.e the vcenter server(s)|
-|target_esxi||
-The command above uses the flags -e to set the vcenter user (vmware_user) which is tjohnson@vsphere.local. The  target_esxi for the ESXi IP address, and target field is the vcenter IP or name defined in the inventory file
+|target_esxi|Is the ESXi host to target in vCenter|
+|vmware_user|The user on VMware with permissions to login to vCenter and create new VMs from OVAs|
 
 
 ### Testing the playbook:
@@ -57,6 +57,23 @@ Run the following to execute
 
 **Note:** The command above uses the flags -e to set the vcenter user (vmware_user) which is tjohnson@vsphere.local. The  target_esxi for the ESXi IP address, and target field is the vcenter IP or name defined in the inventory file. Password will be
 
+To be successful with deploying a CM the properities in the playbook do need to be set. Below is the properties that need to be edited in the playbook. Since this is the same as deploying the OVA manually, this is not included in the readme.
+
+```
+        properties:
+          ip0: "1.1.1.52"
+          netmask0: "255.255.255.0"
+          ip1: "1.1.1.62"
+          netmask1: "255.255.255.0"
+          gateway: "1.1.1.1"
+          hostname: "{{ hostName }}.{{ domain }}"
+          weblmip: "1.1.1.5"
+          dns: ""
+          EASG_enable: "1"
+          cm_login: "abccm"
+          cm_password: "toor"
+          ntpservers: "1.1.1.6"
+```
 
 ### Output expected:
 A deployed CM Simplex OVA :)
