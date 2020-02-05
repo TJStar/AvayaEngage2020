@@ -10,9 +10,10 @@ This is an inital repo to store created ansible playbooks created to complete sp
 
 ## Playbooks in the repo:
 
-|Playbook Name|Brief Description|Readme for Playbook|
-|---|---|---|
-|snmpCheck|This playbook was designed to check if Windows SNMP is configured|[snmpCheck](win/snmpCheck.md)|
+|Playbook Name|Brief Description|Readme for Playbook|Playbook|
+|---|---|---|---|
+|snmpCheck|This playbook was designed to check if Windows SNMP is configured|[snmpCheck](win/snmpCheck.md)|[snmpCheck](win/snmpCheck.yml)|
 |snmpInstall|This playbook was designed to install and configure Windows SNMP |[snmpInstall](win/snmpInstall.md)|[snmpInstall](win/snmpInstall.yml)|
 |CM release|Pulls the Avaya release data from the CM |[CM Release](avaya/cmrelease.md)|[CM Release](avaya/cmrelease.yml)|
-|deploy-cm-ova|Deploys a simplex CM server |[deploy-cm-ova](avaya/deploy-cm-ova-new.md)|[deploy-cm-ova](avaya/deploy-cm-ova-new.yml)|
+|deploy-cm-ova-new|Deploys a simplex CM server |[deploy-cm-ova-new](avaya/deploy-cm-ova-new.md)|[deploy-cm-ova-new](avaya/deploy-cm-ova-new.yml)|
+|g450-annc-downlaod|Downloads all announcement files from G450 |[g450-annc-downlaod](avaya/g450-annc-downlaod.md)|[g450-annc-downlaod](avaya/g450-annc-downlaod.yml)|
