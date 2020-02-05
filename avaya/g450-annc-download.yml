@@ -1,0 +1,145 @@
+---
+
+- hosts: localhost
+
+  vars:
+
+         g450_user: root
+
+         g450_pass: toor
+
+         g450_host: 1.1.1.14
+
+         annc_bkup_host: 1.1.1.8
+
+         annc_bkup_login: hostUser
+
+         annc_bkup_pwd: hostPwd
+
+         g450_ftp_login: ftpUser
+
+         g450_ftp_pwd: ftpPassword
+
+         annc_file: []
+
+         annc_dir: /home/c1admin/annc/{{ lookup('pipe', 'date +%Y_%m%d_%H%M') }}
+
+  tasks:
+
+   - name: Grab list of anncs
+
+     shell: |
+
+         set timeout 20
+
+         spawn ssh {{ g450_user }}@{{ g450_host }}
+
+
+
+         expect {
+
+          "yes/no)? "
+
+          {
+
+            send "yes\r"
+
+            exp_continue
+
+          }
+
+          "ssword: "
+
+          {
+
+            send "{{ g450_pass }}\n"
+
+          }
+
+         }
+
+         expect "# "
+
+         send "\r"
+
+         send "show announcements file brief\n"
+
+
+
+         expect {
+
+          "space key to continue--"
+
+          {
+
+            send "\n"
+
+            exp_continue
+
+          }
+
+         }
+
+         expect "#"
+
+         send "exit\n"
+
+
+
+     args:
+
+         executable: /usr/bin/expect
+
+     connection: local
+
+     register: show_annc_file
+
+
+
+   - name: Find announcements
+
+     debug: msg="{{ item | regex_search('[A-Z,a-z,\-,_,0-9]+.wav') }}"
+
+     with_items:
+
+         - "{{ show_annc_file.stdout_lines }}"
+
+
+
+   - name: Set announcement file name
+
+     set_fact:
+
+          annc_file: "{{ annc_file  + [  item | regex_search('[A-Z,a-z,-,_,0-9]+.wav')] }}"
+
+     when:  item | search('.wav')
+
+     with_items:
+
+         - "{{ show_annc_file.stdout_lines }}"
+
+
+
+   - name: Show found announcements
+
+     debug: var=annc_file
+
+
+
+   - name: Make destination directory
+
+     file: path={{ annc_dir }}/{{g450_host }}/ state=directory
+
+
+
+
+
+   - name: G450 FTP Download
+
+     get_url: url=ftp://{{g450_ftp_login}}:{{g450_ftp_pwd}}@{{ g450_host}}/annc/{{ item}} dest={{ annc_dir}}/{{ g450_host }}/{{item}}
+
+     with_items:
+
+     - "{{ annc_file }}"
+
+     register: get_url_result
