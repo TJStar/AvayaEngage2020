@@ -7,7 +7,7 @@
 |Fields|Info|
 |---|---|
 |peer_review|TBD|
-|author|[Tish Johnson](mailto:ljjohnson@convergeone.com?subject=release-ansible-playbook)
+|author|[Tish Johnson](mailto:ljjohnson@convergeone.com?subject=deploy-cm-ova-new-ansible-playbook)
 |creation_date|01/11/20|
 |tested_ansible_release|2.7.2|
 
